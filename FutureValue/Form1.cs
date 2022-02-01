@@ -45,13 +45,25 @@ namespace FutureValue
 
         private void btnCalc_Click(object sender, EventArgs e)
         {
-            
-            monthlyPrincipal = Decimal.Parse(txtMontly.Text);
-            intRate = Decimal.Parse(txtAPR.Text) / 12;
-            months = int.Parse(txtYears.Text) * 12;
-            future = CalculateFutureValue(monthlyPrincipal, intRate, months);
+            try
+            {
+                monthlyPrincipal = Decimal.Parse(txtMontly.Text);
+                intRate = Decimal.Parse(txtAPR.Text) / 12;
+                months = int.Parse(txtYears.Text) * 12;
+                future = CalculateFutureValue(monthlyPrincipal, intRate, months);
+                txtFuture.Text = future.ToString("c");
 
-            txtFuture.Text = future.ToString("c");
+            }catch(FormatException)
+            {
+                MessageBox.Show("Invalid numeric format, please input numeric values.", "Format Error");
+            }catch(OverflowException)
+            {
+                MessageBox.Show("Value too large, please input smaller numeric values.","Overflow Error");
+            }catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
         }
 
         private decimal CalculateFutureValue(decimal monthlyPrincipal, 
